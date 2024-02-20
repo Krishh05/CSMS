@@ -1,14 +1,16 @@
 package com.app.pojos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,44 +19,35 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "customers")
+@Table(name = "branches")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Customer {
+public class Branch {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "customer_id")
-	private Long customerId;
-	@Column(name = "first_name")
-	private String firstName;
-	@Column(name = "last_name")
-	private String lastName;
+	@Column(name = "branch_id")
+	private Long branchId;
+	@Column(name = "branch_name")
+	private String branchName;
 	private String phone;
 	private String email;
-	@Enumerated(EnumType.STRING)
-	@Column(name = "customer_type")
-	private CustomerType customerType;
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
 	private Address addressId;
-	public Long getCustomerId() {
-		return customerId;
+	@OneToMany(mappedBy = "branchId", cascade = CascadeType.ALL)
+	private List<Employee> employees = new ArrayList<Employee>();
+	public Long getBranchId() {
+		return branchId;
 	}
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
 	}
-	public String getFirstName() {
-		return firstName;
+	public String getBranchName() {
+		return branchName;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
 	}
 	public String getPhone() {
 		return phone;
@@ -68,17 +61,27 @@ public class Customer {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public CustomerType getCustomerType() {
-		return customerType;
-	}
-	public void setCustomerType(CustomerType customerType) {
-		this.customerType = customerType;
-	}
 	public Address getAddressId() {
 		return addressId;
 	}
 	public void setAddressId(Address addressId) {
 		this.addressId = addressId;
 	}
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
 	
+
+//	public void addEmployee(Employee employee) {
+//        this.employees.add(employee);
+//        employee.setBranchId(this);
+//    }
+//	
+//	public void removeEmployee(Employee employee) {
+//        this.employees.remove(employee);
+//        employee.setBranchId(null);
+//    }
 }
